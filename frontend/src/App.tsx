@@ -1,8 +1,17 @@
 import './App.css';
 import { useStatusQuery } from './api/status-query';
+import ErrorBoundary from './components/ErrorBoundary';
+import ErrorDisplay from './components/ErrorDisplay';
+import { useErrorHandler } from './hooks/useErrorHandler';
 
-function App() {
+function AppContent() {
   const { data: statusData, isLoading, error } = useStatusQuery();
+  const { errorState, handleError, clearError } = useErrorHandler();
+
+  // Manejar errores de la query
+  if (error && !errorState.hasError) {
+    handleError(error);
+  }
 
   return (
     <div
@@ -33,9 +42,15 @@ function App() {
         )}
         
         {error && (
-          <div style={{ color: '#dc2626' }}>
-            ❌ Error de conexión: {error.message}
-          </div>
+          <ErrorDisplay
+            error={error}
+            variant="compact"
+            onRetry={() => {
+              clearError();
+              // Forzar refetch de la query
+              window.location.reload();
+            }}
+          />
         )}
         
         {statusData && (
@@ -45,6 +60,18 @@ function App() {
         )}
       </div>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <ErrorBoundary
+      onError={(error, errorInfo) => {
+        console.error('🚨 Error capturado por ErrorBoundary:', error, errorInfo);
+      }}
+    >
+      <AppContent />
+    </ErrorBoundary>
   );
 }
 
