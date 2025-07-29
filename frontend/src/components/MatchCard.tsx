@@ -20,9 +20,13 @@ interface MatchCardProps {
   onLike: (propertyId: string) => void;
   onView: (propertyId: string) => void;
   onAccept: (propertyId: string) => void;
+  onPrevious: () => void;
+  onNext: () => void;
+  currentIndex: number;
+  totalProperties: number;
 }
 
-const MatchCard: React.FC<MatchCardProps> = ({ property, onReject, onLike, onView, onAccept }) => {
+const MatchCard: React.FC<MatchCardProps> = ({ property, onReject, onLike, onView, onAccept, onPrevious, onNext, currentIndex, totalProperties }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const nextImage = () => {
@@ -64,6 +68,13 @@ const MatchCard: React.FC<MatchCardProps> = ({ property, onReject, onLike, onVie
               alt={property.images[currentImageIndex].alt}
               className="w-full h-full object-cover"
             />
+            
+            {/* Contador de propiedades centrado sobre la imagen */}
+            <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-md">
+              <span className="text-sm font-medium text-gray-700">
+                Propiedad {currentIndex + 1} de {totalProperties}
+              </span>
+            </div>
             
             {/* Botones de navegación */}
             {property.images.length > 1 && (
@@ -148,11 +159,21 @@ const MatchCard: React.FC<MatchCardProps> = ({ property, onReject, onLike, onVie
         </div>
 
         {/* Botones de acción circulares */}
-        <div className="flex justify-center space-x-8">
+        <div className="flex justify-center items-center space-x-8">
+          {/* Flecha anterior */}
+          <button
+            onClick={onPrevious}
+            className="focus:outline-none w-16 h-16 rounded-full border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 flex items-center justify-center"
+          >
+            <svg className="w-8 h-8 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+
           {/* Botón Rechazar */}
           <button
             onClick={handleReject}
-            className="w-16 h-16 rounded-full border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 flex items-center justify-center"
+            className="focus:outline-none w-16 h-16 rounded-full border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 flex items-center justify-center"
           >
             <svg className="w-8 h-8 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -162,7 +183,7 @@ const MatchCard: React.FC<MatchCardProps> = ({ property, onReject, onLike, onVie
           {/* Botón Like */}
           <button
             onClick={handleLike}
-            className="w-16 h-16 rounded-full border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 flex items-center justify-center"
+            className="focus:outline-none w-16 h-16 rounded-full border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 flex items-center justify-center"
           >
             <svg className="w-8 h-8 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
@@ -172,7 +193,7 @@ const MatchCard: React.FC<MatchCardProps> = ({ property, onReject, onLike, onVie
           {/* Botón Ver */}
           <button
             onClick={handleView}
-            className="w-16 h-16 rounded-full border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 flex items-center justify-center"
+            className="focus:outline-none w-16 h-16 rounded-full border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 flex items-center justify-center"
           >
             <svg className="w-8 h-8 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -183,10 +204,20 @@ const MatchCard: React.FC<MatchCardProps> = ({ property, onReject, onLike, onVie
           {/* Botón Aceptar */}
           <button
             onClick={handleAccept}
-            className="w-16 h-16 rounded-full border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 flex items-center justify-center"
+            className="focus:outline-none w-16 h-16 rounded-full border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 flex items-center justify-center"
           >
             <svg className="w-8 h-8 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+          </button>
+
+          {/* Flecha siguiente */}
+          <button
+            onClick={onNext}
+            className="focus:outline-none w-16 h-16 rounded-full border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 flex items-center justify-center"
+          >
+            <svg className="w-8 h-8 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </button>
         </div>

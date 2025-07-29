@@ -90,6 +90,18 @@ const MatchView: React.FC = () => {
     }
   };
 
+  const handlePrevious = () => {
+    if (currentPropertyIndex > 0) {
+      setCurrentPropertyIndex(currentPropertyIndex - 1);
+    }
+  };
+
+  const handleNext = () => {
+    if (currentPropertyIndex < properties.length - 1) {
+      setCurrentPropertyIndex(currentPropertyIndex + 1);
+    }
+  };
+
   const currentProperty = properties[currentPropertyIndex];
 
   return (
@@ -101,11 +113,6 @@ const MatchView: React.FC = () => {
         <p className="text-gray-600 mb-6">
           Encuentra la propiedad perfecta que coincida con tus criterios de búsqueda.
         </p>
-        
-        {/* Contador de propiedades */}
-        <div className="text-sm text-gray-500 mb-6">
-          Propiedad {currentPropertyIndex + 1} de {properties.length}
-        </div>
 
         {/* Card de la propiedad */}
         {currentProperty ? (
@@ -115,6 +122,10 @@ const MatchView: React.FC = () => {
             onLike={handleLike}
             onView={handleView}
             onAccept={handleAccept}
+            onPrevious={handlePrevious}
+            onNext={handleNext}
+            currentIndex={currentPropertyIndex}
+            totalProperties={properties.length}
           />
         ) : (
           <div className="text-center py-12">
