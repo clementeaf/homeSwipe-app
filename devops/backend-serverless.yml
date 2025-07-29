@@ -1,0 +1,122 @@
+# HomeSwipe Backend Serverless Configuration
+# Este archivo despliega el backend a AWS Lambda
+
+service: homeswipe-backend
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  stage: ${opt:stage, 'dev'}
+  environment:
+    DYNAMODB_TABLE: homeswipe-users-${self:provider.stage}
+    S3_BUCKET: homeswipe-uploads-${self:provider.stage}
+    DEPLOYMENT_VERSION: '1.0.0'
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: 
+        - "arn:aws:dynamodb:${self:provider.region}:*:table/homeswipe-users-${self:provider.stage}"
+        - "arn:aws:dynamodb:${self:provider.region}:*:table/homeswipe-users-${self:provider.stage}/index/*"
+    - Effect: Allow
+      Action:
+        - s3:GetObject
+        - s3:PutObject
+        - s3:DeleteObject
+        - s3:ListBucket
+      Resource:
+        - "arn:aws:s3:::homeswipe-uploads-${self:provider.stage}"
+        - "arn:aws:s3:::homeswipe-uploads-${self:provider.stage}/*"
+
+functions:
+  api:
+    handler: handler.handler
+    events:
+      - http:
+          path: /
+          method: GET
+          cors:
+            origin: '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
+      - http:
+          path: /api/status
+          method: GET
+          cors:
+            origin: '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
+      - http:
+          path: /api/health
+          method: GET
+          cors:
+            origin: '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
+      - http:
+          path: /api/discovery
+          method: GET
+          cors:
+            origin: '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
+      - http:
+          path: /{proxy+}
+          method: ANY
+          cors:
+            origin: '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
+    timeout: 30
+    memorySize: 1024
+
+package:
+  individually: false
+  patterns:
+    - '!node_modules/**'
+    - '!*.yml'
+    - '!*.yaml'
+    - '!*.md'
+    - '!*.sh'
+    - 'handler.js'
+
+plugins:
+  - serverless-offline

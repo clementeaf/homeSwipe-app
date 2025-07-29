@@ -1,0 +1,56 @@
+{
+  "timestamp": "2025-07-29T18:05:54.172Z",
+  "routes": {
+    "__0": {
+      "path": "/",
+      "method": "GET",
+      "description": "Endpoint raíz del API",
+      "example": "/",
+      "source": {
+        "file": "index.ts",
+        "line": 16
+      }
+    },
+    "_api_status_1": {
+      "path": "/api/status",
+      "method": "GET",
+      "description": "Estado del backend",
+      "example": "/api/status",
+      "source": {
+        "file": "index.ts",
+        "line": 20
+      }
+    },
+    "_api_health_2": {
+      "path": "/api/health",
+      "method": "GET",
+      "description": "Health check del sistema",
+      "example": "/api/health",
+      "source": {
+        "file": "index.ts",
+        "line": 24
+      }
+    },
+    "_api_users_3": {
+      "path": "/api/users",
+      "method": "GET",
+      "description": "Gestión de usuarios",
+      "example": "/api/users",
+      "source": {
+        "file": "index.ts",
+        "line": 29
+      }
+    },
+    "_api_users_4": {
+      "path": "/api/users",
+      "method": "POST",
+      "description": "Gestión de usuarios",
+      "example": "/api/users",
+      "source": {
+        "file": "index.ts",
+        "line": 40
+      }
+    }
+  },
+  "totalRoutes": 5
+}

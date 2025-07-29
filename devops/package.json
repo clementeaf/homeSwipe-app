@@ -1,0 +1,41 @@
+{
+  "name": "homeswipe-devops",
+  "version": "1.0.0",
+  "description": "DevOps configuration and deployment scripts for HomeSwipe",
+  "main": "index.js",
+  "scripts": {
+    "deploy:infra": "./deploy-infrastructure.sh",
+    "deploy:infra:prod": "./deploy-infrastructure.sh prod",
+    "deploy:backend": "./deploy-backend.sh",
+    "deploy:backend:prod": "./deploy-backend.sh prod",
+    "deploy:frontend": "./deploy-frontend.sh",
+    "deploy:frontend:prod": "./deploy-frontend.sh prod",
+    "deploy:all": "./deploy-infrastructure.sh && ./deploy-backend.sh && ./deploy-frontend.sh",
+    "deploy:all:prod": "./deploy-infrastructure.sh prod && ./deploy-backend.sh prod && ./deploy-frontend.sh prod",
+    "remove:infra": "serverless remove --config infrastructure.yml",
+    "remove:infra:prod": "serverless remove --config infrastructure.yml --stage prod",
+    "remove:backend": "serverless remove --config backend-serverless.yml",
+    "remove:backend:prod": "serverless remove --config backend-serverless.yml --stage prod",
+    "generate:routes": "node generate-routes.js",
+    "monitor:routes": "node monitor-routes.js",
+    "monitor:routes:continuous": "node monitor-routes.js --continuous",
+    "test:backend": "curl -s https://u00g8tjlrh.execute-api.us-east-1.amazonaws.com/dev/api/status | jq .",
+    "test:discovery": "curl -s https://u00g8tjlrh.execute-api.us-east-1.amazonaws.com/dev/api/discovery | jq .",
+    "logs:backend": "npx serverless logs --config backend-serverless.yml --function api --startTime 5m"
+  },
+  "keywords": [
+    "devops",
+    "aws",
+    "serverless",
+    "lambda",
+    "s3",
+    "dynamodb",
+    "cloudfront"
+  ],
+  "author": "HomeSwipe Team",
+  "license": "ISC",
+  "devDependencies": {
+    "serverless": "^3.38.0",
+    "serverless-offline": "^13.3.3"
+  }
+}
