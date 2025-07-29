@@ -1,13 +1,13 @@
 import { httpClient } from './http-client';
 import { apiDiscovery } from './discovery';
-import type { APIRoute } from './types';
 import type { 
+  APIRoute,
   UsersResponse, 
   StatusResponse, 
   HealthResponse, 
   DiscoveryResponse,
   User 
-} from './types';
+} from '../types';
 
 /**
  * Gestor de Rutas RESTful

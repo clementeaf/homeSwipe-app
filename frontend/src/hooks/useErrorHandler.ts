@@ -1,17 +1,5 @@
 import { useState, useCallback } from 'react';
-
-interface ErrorState {
-  hasError: boolean;
-  error: Error | null;
-  errorInfo?: any;
-}
-
-interface UseErrorHandlerReturn {
-  errorState: ErrorState;
-  handleError: (error: Error, errorInfo?: any) => void;
-  clearError: () => void;
-  resetError: () => void;
-}
+import type { ErrorState, UseErrorHandlerReturn } from '../types';
 
 /**
  * Hook personalizado para manejo de errores

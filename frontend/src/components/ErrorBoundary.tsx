@@ -1,12 +1,6 @@
 import { Component } from 'react';
-import type { ErrorInfo, ReactNode } from 'react';
-
-interface Props {
-  children: ReactNode;
-  fallback?: ReactNode;
-  onError?: (error: Error, errorInfo: ErrorInfo) => void;
-  resetKey?: string | number;
-}
+import type { ErrorInfo } from 'react';
+import type { ErrorBoundaryProps } from '../types';
 
 interface State {
   hasError: boolean;
@@ -14,8 +8,8 @@ interface State {
   errorInfo: ErrorInfo | null;
 }
 
-class ErrorBoundary extends Component<Props, State> {
-  constructor(props: Props) {
+class ErrorBoundary extends Component<ErrorBoundaryProps, State> {
+  constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = {
       hasError: false,

@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { httpClient } from './http-client';
-import type { StatusResponse } from './types';
+import type { StatusResponse } from '../types';
 
 // Función para obtener el status del backend
 const fetchStatus = async (): Promise<StatusResponse> => {

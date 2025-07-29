@@ -1,14 +1,5 @@
 import React from 'react';
-
-interface ErrorDisplayProps {
-  error: Error | null;
-  errorInfo?: any;
-  onRetry?: () => void;
-  onReset?: () => void;
-  variant?: 'default' | 'compact' | 'inline';
-  showDetails?: boolean;
-  className?: string;
-}
+import type { ErrorDisplayProps } from '../types';
 
 const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
   error,

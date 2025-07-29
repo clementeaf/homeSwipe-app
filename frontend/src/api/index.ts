@@ -3,7 +3,6 @@
 
 // Discovery Service
 export { apiDiscovery, useAPIDiscovery } from './discovery';
-export type { APIDiscovery } from './discovery';
 
 // HTTP Client
 export { httpClient } from './http-client';
@@ -16,8 +15,9 @@ export type {
   UsersResponse,
   StatusResponse,
   HealthResponse,
-  DiscoveryResponse
-} from './types';
+  DiscoveryResponse,
+  APIDiscovery
+} from '../types';
 
 // RESTful Manager
 export {

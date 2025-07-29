@@ -1,14 +1,10 @@
 // Cliente HTTP simple para las peticiones RESTful
 // Configurado para consumir AWS Lambda endpoints
 
+import type { RequestConfig } from '../types';
+
 const BASE_URL = import.meta.env.VITE_API_BASE_URL || 
   'https://u00g8tjlrh.execute-api.us-east-1.amazonaws.com/dev';
-
-interface RequestConfig {
-  method?: string;
-  headers?: Record<string, string>;
-  body?: any;
-}
 
 class HTTPClient {
   private baseURL: string;
@@ -72,14 +68,4 @@ class HTTPClient {
 }
 
 // Instancia singleton del cliente HTTP
-export const httpClient = new HTTPClient(BASE_URL);
-
-// Re-exportar tipos desde el archivo centralizado
-export type {
-  APIResponse,
-  User,
-  UsersResponse,
-  StatusResponse,
-  HealthResponse,
-  DiscoveryResponse
-} from './types'; 
+export const httpClient = new HTTPClient(BASE_URL); 

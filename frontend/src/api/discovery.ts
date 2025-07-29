@@ -1,23 +1,7 @@
 // API Discovery Service
 // Este servicio obtiene dinámicamente las rutas disponibles del backend
 
-import type { APIRoute } from './types';
-
-export interface APIDiscovery {
-  message: string;
-  timestamp: string;
-  version: string;
-  baseUrl: string;
-  routes: {
-    [key: string]: APIRoute;
-  };
-  environment: string;
-  region: string;
-  deployment: {
-    timestamp: string;
-    version: string;
-  };
-}
+import type { APIRoute, APIDiscovery } from '../types';
 
 class APIDiscoveryService {
   private baseUrl: string;
