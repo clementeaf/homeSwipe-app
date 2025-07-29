@@ -106,7 +106,9 @@ export const useSidebarItemFactory = () => {
     id: 'search',
     label,
     icon: '🔍',
-    onClick: () => console.log('Búsqueda clickeada'),
+    onClick: () => {
+      window.location.href = '/looking-for';
+    },
   }), []);
 
   const createHomeItem = useCallback((): SidebarItem => ({
@@ -145,10 +147,20 @@ export const useSidebarItemFactory = () => {
     onClick: () => console.log('Favoritos clickeado'),
   }), []);
 
+  const createMatchItem = useCallback((): SidebarItem => ({
+    id: 'match',
+    label: 'Match',
+    icon: '🎯',
+    onClick: () => {
+      window.location.href = '/match';
+    },
+  }), []);
+
   return {
     createSearchItem,
     createHomeItem,
     createPropertiesItem,
     createFavoritesItem,
+    createMatchItem,
   };
 }; 

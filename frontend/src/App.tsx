@@ -1,8 +1,9 @@
 import './App.css';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useStatusQuery } from './api/status-query';
 import ErrorBoundary from './components/ErrorBoundary';
 import DisplayLayout from './components/DisplayLayout';
-import { LookingForForm } from './components/LookingFor';
+import { LookingForView, MatchView } from './views';
 import { useErrorHandler } from './hooks/useErrorHandler';
 import { useSidebarItemFactory } from './hooks/useSidebar';
 import type { SidebarItem } from './types';
@@ -10,7 +11,7 @@ import type { SidebarItem } from './types';
 function AppContent() {
   const { error } = useStatusQuery();
   const { errorState, handleError } = useErrorHandler();
-  const { createSearchItem } = useSidebarItemFactory();
+  const { createSearchItem, createMatchItem } = useSidebarItemFactory();
 
   // Manejar errores de la query
   if (error && !errorState.hasError) {
@@ -20,6 +21,7 @@ function AppContent() {
   // Crear items del sidebar
   const sidebarItems: SidebarItem[] = [
     createSearchItem('Lo que busco'),
+    createMatchItem(),
   ];
 
   const handleSidebarItemClick = (item: SidebarItem) => {
@@ -28,15 +30,18 @@ function AppContent() {
   };
 
   return (
-    <DisplayLayout
-      sidebarItems={sidebarItems}
-      onSidebarItemClick={handleSidebarItemClick}
-    >
-      {/* Contenido principal */}
-      <div className="w-full h-full flex flex-col">
-        <LookingForForm />
-      </div>
-    </DisplayLayout>
+    <Router>
+      <DisplayLayout
+        sidebarItems={sidebarItems}
+        onSidebarItemClick={handleSidebarItemClick}
+      >
+        <Routes>
+          <Route path="/looking-for" element={<LookingForView />} />
+          <Route path="/match" element={<MatchView />} />
+          <Route path="/" element={<Navigate to="/looking-for" replace />} />
+        </Routes>
+      </DisplayLayout>
+    </Router>
   );
 }
 
