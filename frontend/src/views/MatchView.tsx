@@ -63,6 +63,24 @@ const MatchView: React.FC = () => {
     }
   };
 
+  const handleLike = (propertyId: string) => {
+    console.log('Propiedad con like:', propertyId);
+    // Aquí puedes agregar la lógica para dar like a la propiedad
+    // Por ahora solo avanzamos al siguiente
+    if (currentPropertyIndex < properties.length - 1) {
+      setCurrentPropertyIndex(currentPropertyIndex + 1);
+    }
+  };
+
+  const handleView = (propertyId: string) => {
+    console.log('Propiedad vista:', propertyId);
+    // Aquí puedes agregar la lógica para marcar como vista la propiedad
+    // Por ahora solo avanzamos al siguiente
+    if (currentPropertyIndex < properties.length - 1) {
+      setCurrentPropertyIndex(currentPropertyIndex + 1);
+    }
+  };
+
   const handleAccept = (propertyId: string) => {
     console.log('Propiedad aceptada:', propertyId);
     // Aquí puedes agregar la lógica para aceptar la propiedad
@@ -94,6 +112,8 @@ const MatchView: React.FC = () => {
           <MatchCard
             property={currentProperty}
             onReject={handleReject}
+            onLike={handleLike}
+            onView={handleView}
             onAccept={handleAccept}
           />
         ) : (
