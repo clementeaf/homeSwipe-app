@@ -1,65 +1,42 @@
 import './App.css';
 import { useStatusQuery } from './api/status-query';
 import ErrorBoundary from './components/ErrorBoundary';
-import ErrorDisplay from './components/ErrorDisplay';
+import DisplayLayout from './components/DisplayLayout';
+import { LookingForForm } from './components/LookingFor';
 import { useErrorHandler } from './hooks/useErrorHandler';
+import { useSidebarItemFactory } from './hooks/useSidebar';
+import type { SidebarItem } from './types';
 
 function AppContent() {
-  const { data: statusData, isLoading, error } = useStatusQuery();
-  const { errorState, handleError, clearError } = useErrorHandler();
+  const { error } = useStatusQuery();
+  const { errorState, handleError } = useErrorHandler();
+  const { createSearchItem } = useSidebarItemFactory();
 
   // Manejar errores de la query
   if (error && !errorState.hasError) {
     handleError(error);
   }
 
+  // Crear items del sidebar
+  const sidebarItems: SidebarItem[] = [
+    createSearchItem('Lo que busco'),
+  ];
+
+  const handleSidebarItemClick = (item: SidebarItem) => {
+    console.log('Item clickeado:', item.label);
+    // Aquí puedes agregar la lógica de navegación
+  };
+
   return (
-    <div
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100vw',
-        height: '100vh',
-        backgroundColor: 'white',
-        margin: 0,
-        padding: 0,
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center'
-      }}
+    <DisplayLayout
+      sidebarItems={sidebarItems}
+      onSidebarItemClick={handleSidebarItemClick}
     >
-      <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>HomeSwipe</h1>
-      
-      {/* Estado del Backend */}
-      <div style={{ textAlign: 'center' }}>
-        {isLoading && (
-          <div style={{ color: '#666' }}>
-            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mx-auto mb-2"></div>
-            Conectando con backend...
-          </div>
-        )}
-        
-        {error && (
-          <ErrorDisplay
-            error={error}
-            variant="compact"
-            onRetry={() => {
-              clearError();
-              // Forzar refetch de la query
-              window.location.reload();
-            }}
-          />
-        )}
-        
-        {statusData && (
-          <div style={{ color: '#059669' }}>
-            ✅ {statusData.status}
-          </div>
-        )}
+      {/* Contenido principal */}
+      <div className="w-full h-full flex flex-col">
+        <LookingForForm />
       </div>
-    </div>
+    </DisplayLayout>
   );
 }
 

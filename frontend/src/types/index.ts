@@ -213,10 +213,61 @@ export interface RouteConfig {
   roles?: string[];
 }
 
+// ===== SIDEBAR TYPES =====
+export interface SidebarItem {
+  id: string;
+  label: string;
+  icon?: React.ReactNode;
+  href?: string;
+  onClick?: () => void;
+  isActive?: boolean;
+  isDisabled?: boolean;
+  children?: SidebarItem[];
+  badge?: {
+    text: string;
+    variant?: 'default' | 'success' | 'warning' | 'error';
+  };
+}
+
+export interface SidebarProps {
+  isOpen?: boolean;
+  onToggle?: () => void;
+  items: SidebarItem[];
+  className?: string;
+  variant?: 'default' | 'compact' | 'overlay';
+  position?: 'left' | 'right';
+  width?: string;
+  showHeader?: boolean;
+  headerTitle?: string;
+  headerSubtitle?: string;
+  onItemClick?: (item: SidebarItem) => void;
+  showActiveIndicator?: boolean;
+  collapsible?: boolean;
+  defaultCollapsed?: boolean;
+}
+
+export interface SidebarItemProps {
+  item: SidebarItem;
+  isActive?: boolean;
+  isCollapsed?: boolean;
+  onClick?: (item: SidebarItem) => void;
+  className?: string;
+  level?: number;
+}
+
+// ===== NAVIGATION TYPES =====
+export interface NavigationItem extends SidebarItem {
+  route?: string;
+  permissions?: string[];
+  roles?: string[];
+  external?: boolean;
+}
+
 export interface NavigationState {
   currentRoute: string;
   previousRoute?: string;
   params?: Record<string, any>;
+  breadcrumbs?: NavigationItem[];
 }
 
 // ===== THEME TYPES =====
