@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import MatchCard from '../components/MatchCard';
+import type { Property } from '../types';
 
 // Datos de ejemplo para testing
-const sampleProperties = [
+const sampleProperties: Property[] = [
   {
     id: '1',
     title: 'Casa moderna en Las Condes',

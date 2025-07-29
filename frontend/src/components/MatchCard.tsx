@@ -1,44 +1,26 @@
 import React, { useState } from 'react';
+import type { MatchCardProps } from '../types';
+import { createActionButtons, handleImageNavigation } from '../utils/matchCardUtils';
 
-interface PropertyImage {
-  id: string;
-  url: string;
-  alt: string;
-}
-
-interface MatchCardProps {
-  property: {
-    id: string;
-    title: string;
-    location: string;
-    matchPercentage: number;
-    views: number;
-    likes: number;
-    images: PropertyImage[];
-  };
-  onReject: (propertyId: string) => void;
-  onLike: (propertyId: string) => void;
-  onView: (propertyId: string) => void;
-  onAccept: (propertyId: string) => void;
-  onPrevious: () => void;
-  onNext: () => void;
-  currentIndex: number;
-  totalProperties: number;
-}
-
-const MatchCard: React.FC<MatchCardProps> = ({ property, onReject, onLike, onView, onAccept, onPrevious, onNext, currentIndex, totalProperties }) => {
+const MatchCard: React.FC<MatchCardProps> = ({ 
+  property, 
+  onReject, 
+  onLike, 
+  onView, 
+  onAccept, 
+  onPrevious, 
+  onNext, 
+  currentIndex, 
+  totalProperties 
+}) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const nextImage = () => {
-    setCurrentImageIndex((prev) => 
-      prev === property.images.length - 1 ? 0 : prev + 1
-    );
+    handleImageNavigation(currentImageIndex, property.images.length, 'next', setCurrentImageIndex);
   };
 
   const prevImage = () => {
-    setCurrentImageIndex((prev) => 
-      prev === 0 ? property.images.length - 1 : prev - 1
-    );
+    handleImageNavigation(currentImageIndex, property.images.length, 'prev', setCurrentImageIndex);
   };
 
   const handleReject = () => {
@@ -56,6 +38,16 @@ const MatchCard: React.FC<MatchCardProps> = ({ property, onReject, onLike, onVie
   const handleAccept = () => {
     onAccept(property.id);
   };
+
+  // Crear botones de acción usando la utilidad
+  const actionButtons = createActionButtons(
+    onPrevious,
+    handleReject,
+    handleLike,
+    handleView,
+    handleAccept,
+    onNext
+  );
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -160,66 +152,16 @@ const MatchCard: React.FC<MatchCardProps> = ({ property, onReject, onLike, onVie
 
         {/* Botones de acción circulares */}
         <div className="flex justify-center items-center space-x-8">
-          {/* Flecha anterior */}
-          <button
-            onClick={onPrevious}
-            className="focus:outline-none w-16 h-16 rounded-full border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 flex items-center justify-center"
-          >
-            <svg className="w-8 h-8 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-
-          {/* Botón Rechazar */}
-          <button
-            onClick={handleReject}
-            className="focus:outline-none w-16 h-16 rounded-full border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 flex items-center justify-center"
-          >
-            <svg className="w-8 h-8 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-          
-          {/* Botón Like */}
-          <button
-            onClick={handleLike}
-            className="focus:outline-none w-16 h-16 rounded-full border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 flex items-center justify-center"
-          >
-            <svg className="w-8 h-8 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-            </svg>
-          </button>
-          
-          {/* Botón Ver */}
-          <button
-            onClick={handleView}
-            className="focus:outline-none w-16 h-16 rounded-full border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 flex items-center justify-center"
-          >
-            <svg className="w-8 h-8 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-            </svg>
-          </button>
-          
-          {/* Botón Aceptar */}
-          <button
-            onClick={handleAccept}
-            className="focus:outline-none w-16 h-16 rounded-full border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 flex items-center justify-center"
-          >
-            <svg className="w-8 h-8 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-            </svg>
-          </button>
-
-          {/* Flecha siguiente */}
-          <button
-            onClick={onNext}
-            className="focus:outline-none w-16 h-16 rounded-full border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 flex items-center justify-center"
-          >
-            <svg className="w-8 h-8 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
+          {actionButtons.map((button) => (
+            <button
+              key={button.id}
+              onClick={button.onClick}
+              className="focus:outline-none w-16 h-16 rounded-full border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 flex items-center justify-center"
+              title={button.label}
+            >
+              {button.icon}
+            </button>
+          ))}
         </div>
       </div>
     </div>

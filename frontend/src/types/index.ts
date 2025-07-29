@@ -380,4 +380,40 @@ export interface PerformanceAlert {
   value: number;
   threshold: number;
   timestamp: number;
+}
+
+// MatchCard Types
+export interface PropertyImage {
+  id: string;
+  url: string;
+  alt: string;
+}
+
+export interface Property {
+  id: string;
+  title: string;
+  location: string;
+  matchPercentage: number;
+  views: number;
+  likes: number;
+  images: PropertyImage[];
+}
+
+export interface ActionButton {
+  id: string;
+  onClick: () => void;
+  icon: React.ReactNode;
+  label: string;
+}
+
+export interface MatchCardProps {
+  property: Property;
+  onReject: (propertyId: string) => void;
+  onLike: (propertyId: string) => void;
+  onView: (propertyId: string) => void;
+  onAccept: (propertyId: string) => void;
+  onPrevious: () => void;
+  onNext: () => void;
+  currentIndex: number;
+  totalProperties: number;
 } 
